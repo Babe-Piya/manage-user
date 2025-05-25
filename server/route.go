@@ -33,6 +33,7 @@ func routes(e *echo.Echo, db *mongo.Database) {
 
 	userAPI := e.Group("/user")
 	userAPI.POST("/create", userCtrl.CreateUser)
+	userAPI.POST("/update", userCtrl.UpdateUserByID)
 	userAPI.GET("/list", userCtrl.GetListUser)
 	userAPI.GET("/:id", userCtrl.GetUserByID)
 }

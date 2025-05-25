@@ -10,6 +10,7 @@ type UserService interface {
 	CreateUser(ctx context.Context, req CreateUserRequest) (*CreateUserResponse, error)
 	GetListUser(ctx context.Context) (*GetListUserResponse, error)
 	GetUserByID(ctx context.Context, id string) (*GetUserResponse, error)
+	UpdateUserByID(ctx context.Context, req UpdateUserRequest) (*UpdateUserResponse, error)
 }
 
 type userService struct {
