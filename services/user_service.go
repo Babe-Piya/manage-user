@@ -8,6 +8,7 @@ import (
 
 type UserService interface {
 	CreateUser(ctx context.Context, req CreateUserRequest) (*CreateUserResponse, error)
+	GetListUser(ctx context.Context) (*GetListUserResponse, error)
 }
 
 type userService struct {

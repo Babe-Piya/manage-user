@@ -9,6 +9,7 @@ import (
 
 type UserRepository interface {
 	CreateUser(ctx context.Context, user User) (interface{}, error)
+	GetListUser(ctx context.Context) ([]User, error)
 }
 
 type userRepository struct {
