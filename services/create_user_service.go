@@ -6,6 +6,8 @@ import (
 	"time"
 
 	"manage-user/repositories"
+
+	"github.com/google/uuid"
 )
 
 type CreateUserRequest struct {
@@ -22,6 +24,7 @@ type CreateUserResponse struct {
 
 func (srv *userService) CreateUser(ctx context.Context, req CreateUserRequest) (*CreateUserResponse, error) {
 	id, err := srv.UserRepo.CreateUser(ctx, repositories.User{
+		ID:        uuid.New().String(),
 		Name:      req.Name,
 		Email:     req.Email,
 		Password:  req.Password,

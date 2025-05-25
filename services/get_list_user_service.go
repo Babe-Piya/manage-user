@@ -12,6 +12,7 @@ type GetListUserResponse struct {
 }
 
 type UserDetail struct {
+	ID    string `json:"id"`
 	Name  string `json:"name"`
 	Email string `json:"email"`
 }
@@ -27,6 +28,7 @@ func (srv *userService) GetListUser(ctx context.Context) (*GetListUserResponse, 
 	var userDetails []UserDetail
 	for _, user := range users {
 		userDetails = append(userDetails, UserDetail{
+			ID:    user.ID,
 			Name:  user.Name,
 			Email: user.Email,
 		})
