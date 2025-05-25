@@ -10,6 +10,7 @@ import (
 type UserRepository interface {
 	CreateUser(ctx context.Context, user User) (interface{}, error)
 	GetListUser(ctx context.Context) ([]User, error)
+	GetUserByFilter(ctx context.Context, filter User) ([]User, error)
 }
 
 type userRepository struct {

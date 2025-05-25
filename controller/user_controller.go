@@ -9,6 +9,7 @@ import (
 type UserController interface {
 	CreateUser(c echo.Context) error
 	GetListUser(c echo.Context) error
+	GetUserByID(c echo.Context) error
 }
 type userController struct {
 	UserService services.UserService
