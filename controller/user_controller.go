@@ -11,6 +11,7 @@ type UserController interface {
 	GetListUser(c echo.Context) error
 	GetUserByID(c echo.Context) error
 	UpdateUserByID(c echo.Context) error
+	DeleteUserByID(c echo.Context) error
 }
 type userController struct {
 	UserService services.UserService

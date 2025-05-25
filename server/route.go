@@ -36,4 +36,5 @@ func routes(e *echo.Echo, db *mongo.Database) {
 	userAPI.POST("/update", userCtrl.UpdateUserByID)
 	userAPI.GET("/list", userCtrl.GetListUser)
 	userAPI.GET("/:id", userCtrl.GetUserByID)
+	userAPI.DELETE("/delete/:id", userCtrl.DeleteUserByID)
 }

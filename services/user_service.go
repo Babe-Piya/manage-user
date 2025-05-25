@@ -11,6 +11,7 @@ type UserService interface {
 	GetListUser(ctx context.Context) (*GetListUserResponse, error)
 	GetUserByID(ctx context.Context, id string) (*GetUserResponse, error)
 	UpdateUserByID(ctx context.Context, req UpdateUserRequest) (*UpdateUserResponse, error)
+	DeleteUserByID(ctx context.Context, id string) (*DeleteUserResponse, error)
 }
 
 type userService struct {

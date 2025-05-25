@@ -12,6 +12,7 @@ type UserRepository interface {
 	GetListUser(ctx context.Context) ([]User, error)
 	GetUserByFilter(ctx context.Context, filter User) ([]User, error)
 	UpdateUserByID(ctx context.Context, user User) error
+	DeleteUserByID(ctx context.Context, id string) error
 }
 
 type userRepository struct {
