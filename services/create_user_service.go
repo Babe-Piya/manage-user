@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"log"
+	"strings"
 	"time"
 
 	"manage-user/repositories"
@@ -25,7 +26,7 @@ type CreateUserResponse struct {
 
 func (srv *userService) CreateUser(ctx context.Context, req CreateUserRequest) (*CreateUserResponse, error) {
 	existingUser, err := srv.UserRepo.GetUserByFilter(ctx, repositories.User{Email: req.Email})
-	if err != nil {
+	if err != nil && !strings.Contains(err.Error(), "not found") {
 		log.Println(err)
 
 		return nil, err
