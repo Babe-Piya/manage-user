@@ -9,6 +9,7 @@ import (
 	"manage-user/repositories"
 
 	"github.com/stretchr/testify/assert"
+	"go.uber.org/zap"
 )
 
 func TestDeleteUserByIDWhenNotErrorShouldReturnSuccess(t *testing.T) {
@@ -26,7 +27,8 @@ func TestDeleteUserByIDWhenNotErrorShouldReturnSuccess(t *testing.T) {
 
 	mockRepo.EXPECT().DeleteUserByID(context.TODO(), mockID).Return(nil)
 
-	service := NewUserService(mockRepo, nil)
+	logger, _ := zap.NewProduction()
+	service := NewUserService(mockRepo, nil, logger)
 
 	expected := &DeleteUserResponse{
 		Code:    appconstants.SuccessCode,
@@ -46,7 +48,8 @@ func TestDeleteUserByIDWhenGetUserErrorShouldReturnError(t *testing.T) {
 	mockRepo.EXPECT().GetUserByFilter(context.TODO(), mockGetUser).
 		Return(nil, mockError)
 
-	service := NewUserService(mockRepo, nil)
+	logger, _ := zap.NewProduction()
+	service := NewUserService(mockRepo, nil, logger)
 
 	actual, err := service.DeleteUserByID(context.TODO(), mockID)
 
@@ -69,7 +72,8 @@ func TestDeleteUserByIDWhenDeleteErrorShouldReturnError(t *testing.T) {
 
 	mockRepo.EXPECT().DeleteUserByID(context.TODO(), mockID).Return(mockError)
 
-	service := NewUserService(mockRepo, nil)
+	logger, _ := zap.NewProduction()
+	service := NewUserService(mockRepo, nil, logger)
 
 	actual, err := service.DeleteUserByID(context.TODO(), mockID)
 

@@ -25,7 +25,7 @@ type CreateUserResponse struct {
 }
 
 func (srv *userService) CreateUser(ctx context.Context, req CreateUserRequest) (*CreateUserResponse, error) {
-	srv.Log.Info("CreateUser")
+	srv.Log.Info("function CreateUser")
 	existingUser, err := srv.UserRepo.GetUserByFilter(ctx, repositories.User{Email: req.Email})
 	if err != nil && !strings.Contains(err.Error(), "not found") {
 		srv.Log.Error(err.Error())

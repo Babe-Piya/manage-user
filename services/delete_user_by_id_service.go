@@ -2,8 +2,6 @@ package services
 
 import (
 	"context"
-	"log"
-
 	"manage-user/appconstants"
 	"manage-user/repositories"
 )
@@ -14,16 +12,17 @@ type DeleteUserResponse struct {
 }
 
 func (srv *userService) DeleteUserByID(ctx context.Context, id string) (*DeleteUserResponse, error) {
+	srv.Log.Info("function DeleteUserByID")
 	_, err := srv.UserRepo.GetUserByFilter(ctx, repositories.User{ID: id})
 	if err != nil {
-		log.Println(err)
+		srv.Log.Error(err.Error())
 
 		return nil, err
 	}
 
 	errDel := srv.UserRepo.DeleteUserByID(ctx, id)
 	if errDel != nil {
-		log.Println(errDel)
+		srv.Log.Error(errDel.Error())
 
 		return nil, errDel
 	}
