@@ -2,6 +2,7 @@ package services
 
 import (
 	"context"
+	"errors"
 	"log"
 	"time"
 
@@ -23,6 +24,19 @@ type CreateUserResponse struct {
 }
 
 func (srv *userService) CreateUser(ctx context.Context, req CreateUserRequest) (*CreateUserResponse, error) {
+	existingUser, err := srv.UserRepo.GetUserByFilter(ctx, repositories.User{Email: req.Email})
+	if err != nil {
+		log.Println(err)
+
+		return nil, err
+	}
+
+	if len(existingUser) != 0 {
+		log.Println("duplicate email")
+
+		return nil, errors.New("error duplicate email")
+	}
+
 	id, err := srv.UserRepo.CreateUser(ctx, repositories.User{
 		ID:        uuid.New().String(),
 		Name:      req.Name,

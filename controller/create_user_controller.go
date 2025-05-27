@@ -35,5 +35,5 @@ func (ctrl *userController) CreateUser(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, errResp)
 	}
 
-	return c.JSON(http.StatusOK, resp)
+	return c.JSON(http.StatusCreated, resp)
 }
