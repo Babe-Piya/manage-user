@@ -7,3 +7,4 @@ MongoDB:
   DataBaseName: "user"
 JwtSecret: "abc"
 TokenTime: 30
+CountUserTime: "10s"

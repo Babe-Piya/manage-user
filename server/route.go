@@ -1,16 +1,19 @@
 package server
 
 import (
-	"manage-user/logger"
+	"context"
 	"net/http"
+	"time"
 
 	"manage-user/appconfig"
 	"manage-user/common"
 	"manage-user/controller"
+	"manage-user/logger"
 	"manage-user/middlewares"
 	"manage-user/repositories"
 	"manage-user/services"
 
+	"github.com/go-co-op/gocron"
 	"github.com/go-playground/validator/v10"
 	"github.com/labstack/echo/v4"
 	"go.mongodb.org/mongo-driver/v2/mongo"
@@ -24,8 +27,17 @@ func routes(e *echo.Echo, db *mongo.Database, config *appconfig.AppConfig, log *
 
 	userCtrl := controller.NewUserController(userSrv, log)
 
-	// Custom Validator
-	// Initialize the validator
+	cron := gocron.NewScheduler(time.UTC)
+	cron.Every(config.CountUserTime).Do(func() {
+		userResp, err := userSrv.GetListUser(context.Background())
+		if err != nil {
+			log.Error(err.Error())
+		} else {
+			log.Sugar().Infof("number of users is %v", len(userResp.Users))
+		}
+	})
+	cron.StartAsync()
+
 	e.Validator = &common.CustomValidator{Validator: validator.New()}
 
 	e.GET("/health", func(c echo.Context) error {
