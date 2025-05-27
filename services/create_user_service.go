@@ -10,6 +10,7 @@ import (
 	"manage-user/repositories"
 
 	"github.com/google/uuid"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type CreateUserRequest struct {
@@ -38,11 +39,18 @@ func (srv *userService) CreateUser(ctx context.Context, req CreateUserRequest) (
 		return nil, errors.New("error duplicate email")
 	}
 
+	bytesPass, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
+	if err != nil {
+		log.Println(err)
+
+		return nil, err
+	}
+
 	id, err := srv.UserRepo.CreateUser(ctx, repositories.User{
 		ID:        uuid.New().String(),
 		Name:      req.Name,
 		Email:     req.Email,
-		Password:  req.Password,
+		Password:  string(bytesPass),
 		CreatedAt: time.Now(),
 	})
 	if err != nil {
