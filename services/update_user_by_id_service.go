@@ -21,6 +21,13 @@ type UpdateUserResponse struct {
 }
 
 func (srv *userService) UpdateUserByID(ctx context.Context, req UpdateUserRequest) (*UpdateUserResponse, error) {
+	_, err := srv.UserRepo.GetUserByFilter(ctx, repositories.User{ID: req.ID})
+	if err != nil {
+		log.Println(err)
+
+		return nil, err
+	}
+
 	if req.Email != "" {
 		existingUser, err := srv.UserRepo.GetUserByFilter(ctx, repositories.User{Email: req.Email})
 		if err != nil && !strings.Contains(err.Error(), "not found") {
