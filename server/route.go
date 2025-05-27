@@ -20,9 +20,9 @@ import (
 func routes(e *echo.Echo, db *mongo.Database, config *appconfig.AppConfig, log *zap.Logger) {
 	userRepo := repositories.NewUserRepository(db)
 
-	userSrv := services.NewUserService(userRepo, config)
+	userSrv := services.NewUserService(userRepo, config, log)
 
-	userCtrl := controller.NewUserController(userSrv)
+	userCtrl := controller.NewUserController(userSrv, log)
 
 	// Custom Validator
 	// Initialize the validator

@@ -5,6 +5,8 @@ import (
 
 	"manage-user/appconfig"
 	"manage-user/repositories"
+
+	"go.uber.org/zap"
 )
 
 type UserService interface {
@@ -19,11 +21,13 @@ type UserService interface {
 type userService struct {
 	UserRepo repositories.UserRepository
 	Config   *appconfig.AppConfig
+	Log      *zap.Logger
 }
 
-func NewUserService(userRepo repositories.UserRepository, config *appconfig.AppConfig) UserService {
+func NewUserService(userRepo repositories.UserRepository, config *appconfig.AppConfig, log *zap.Logger) UserService {
 	return &userService{
 		UserRepo: userRepo,
 		Config:   config,
+		Log:      log,
 	}
 }

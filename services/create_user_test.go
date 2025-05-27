@@ -9,6 +9,7 @@ import (
 	"manage-user/repositories"
 
 	"github.com/stretchr/testify/assert"
+	"go.uber.org/zap"
 )
 
 const (
@@ -23,7 +24,8 @@ func TestCreateUserWhenGetUserErrorShouldReturnError(t *testing.T) {
 	mockRepo.EXPECT().GetUserByFilter(context.TODO(), mockGetUser).
 		Return(nil, mockError)
 
-	service := NewUserService(mockRepo, nil)
+	logger, _ := zap.NewProduction()
+	service := NewUserService(mockRepo, nil, logger)
 
 	mockReq := CreateUserRequest{
 		Name:     mockName,
@@ -45,7 +47,8 @@ func TestCreateUserWhenDuplicateEmailShouldReturnError(t *testing.T) {
 	mockRepo.EXPECT().GetUserByFilter(context.TODO(), mockGetUser).
 		Return(mockGetUserResp, nil)
 
-	service := NewUserService(mockRepo, nil)
+	logger, _ := zap.NewProduction()
+	service := NewUserService(mockRepo, nil, logger)
 
 	mockReq := CreateUserRequest{
 		Name:     mockName,

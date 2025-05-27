@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"go.uber.org/zap"
 	"manage-user/services"
 
 	"github.com/labstack/echo/v4"
@@ -16,10 +17,12 @@ type UserController interface {
 }
 type userController struct {
 	UserService services.UserService
+	Log         *zap.Logger
 }
 
-func NewUserController(userService services.UserService) UserController {
+func NewUserController(userService services.UserService, log *zap.Logger) UserController {
 	return &userController{
 		UserService: userService,
+		Log:         log,
 	}
 }

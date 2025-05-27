@@ -2,7 +2,6 @@ package services
 
 import (
 	"context"
-	"log"
 	"strings"
 	"time"
 
@@ -26,22 +25,23 @@ type CreateUserResponse struct {
 }
 
 func (srv *userService) CreateUser(ctx context.Context, req CreateUserRequest) (*CreateUserResponse, error) {
+	srv.Log.Info("CreateUser")
 	existingUser, err := srv.UserRepo.GetUserByFilter(ctx, repositories.User{Email: req.Email})
 	if err != nil && !strings.Contains(err.Error(), "not found") {
-		log.Println(err)
+		srv.Log.Error(err.Error())
 
 		return nil, err
 	}
 
 	if len(existingUser) != 0 {
-		log.Println("duplicate email")
+		srv.Log.Error("duplicate email")
 
 		return nil, appconstants.DuplicateEmailError
 	}
 
 	bytesPass, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
 	if err != nil {
-		log.Println(err)
+		srv.Log.Error(err.Error())
 
 		return nil, err
 	}
@@ -54,7 +54,7 @@ func (srv *userService) CreateUser(ctx context.Context, req CreateUserRequest) (
 		CreatedAt: time.Now(),
 	})
 	if err != nil {
-		log.Println(err)
+		srv.Log.Error(err.Error())
 
 		return nil, err
 	}
