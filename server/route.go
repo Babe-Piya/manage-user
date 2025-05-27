@@ -3,8 +3,10 @@ package server
 import (
 	"net/http"
 
+	"manage-user/appconfig"
 	"manage-user/common"
 	"manage-user/controller"
+	"manage-user/middlewares"
 	"manage-user/repositories"
 	"manage-user/services"
 
@@ -13,10 +15,10 @@ import (
 	"go.mongodb.org/mongo-driver/v2/mongo"
 )
 
-func routes(e *echo.Echo, db *mongo.Database) {
+func routes(e *echo.Echo, db *mongo.Database, config *appconfig.AppConfig) {
 	userRepo := repositories.NewUserRepository(db)
 
-	userSrv := services.NewUserService(userRepo)
+	userSrv := services.NewUserService(userRepo, config)
 
 	userCtrl := controller.NewUserController(userSrv)
 
@@ -32,7 +34,11 @@ func routes(e *echo.Echo, db *mongo.Database) {
 	})
 
 	userAPI := e.Group("/user")
+	userAPI.POST("/login", userCtrl.Login)
 	userAPI.POST("/create", userCtrl.CreateUser)
+
+	auth := middlewares.NewAuthorization(config.JwtSecret)
+	userAPI.Use(auth.AuthorizationMiddleware)
 	userAPI.POST("/update", userCtrl.UpdateUserByID)
 	userAPI.GET("/list", userCtrl.GetListUser)
 	userAPI.GET("/:id", userCtrl.GetUserByID)

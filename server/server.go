@@ -11,24 +11,25 @@ import (
 	"syscall"
 	"time"
 
+	"manage-user/appconfig"
 	"manage-user/database"
 
 	"github.com/labstack/echo/v4"
 	"go.mongodb.org/mongo-driver/v2/mongo"
 )
 
-func Start() (*echo.Echo, *mongo.Database) {
+func Start(config *appconfig.AppConfig) (*echo.Echo, *mongo.Database) {
 	// mongodb://user:password@host:port
-	db, err := database.NewConnection("root", "example", "localhost", "27017", "user")
+	db, err := database.NewConnection(&config.MongoDB)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	e := echo.New()
-	routes(e, db)
+	routes(e, db, config)
 
 	go func() {
-		endPoint := fmt.Sprintf(":%s", "8181")
+		endPoint := fmt.Sprintf(":%s", config.ServerPort)
 		if err := e.Start(endPoint); err != nil && !errors.Is(err, http.ErrServerClosed) {
 			e.Logger.Error(err.Error())
 			e.Logger.Fatal("shutting down the server")
