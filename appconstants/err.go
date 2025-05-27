@@ -1,5 +1,11 @@
 package appconstants
 
+import "errors"
+
+var (
+	DuplicateEmailError = errors.New("error duplicate email")
+)
+
 type ErrorResponse struct {
 	Code    int    `json:"code"`
 	Message string `json:"message"`

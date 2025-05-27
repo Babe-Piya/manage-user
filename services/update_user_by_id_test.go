@@ -13,10 +13,10 @@ import (
 )
 
 const (
-	mockID          = "mock-id"
-	mockUpdateEmail = "mock-update-email"
-	mockUpdateName  = "mock-update-name"
-	mockOldEmail    = "mock-old-email"
+	mockID       = "mock-id"
+	mockEmail    = "mock-email"
+	mockName     = "mock-name"
+	mockOldEmail = "mock-old-email"
 )
 
 var (
@@ -24,19 +24,19 @@ var (
 )
 
 func TestUpdateUserByIDWhenNotErrorShouldReturnSuccess(t *testing.T) {
+	mockRepo := mockrepositories.NewMockUserRepository(t)
 	mockGetUser := repositories.User{
 		ID:    mockID,
-		Email: mockUpdateEmail,
+		Email: mockEmail,
 	}
 	mockGetUserResp := []repositories.User{{ID: mockID, Email: mockOldEmail}}
-	mockRepo := mockrepositories.NewMockUserRepository(t)
 	mockRepo.EXPECT().GetUserByFilter(context.TODO(), mockGetUser).
 		Return(mockGetUserResp, nil)
 
 	mockUpdate := repositories.User{
 		ID:    mockID,
-		Name:  mockUpdateName,
-		Email: mockUpdateEmail,
+		Name:  mockName,
+		Email: mockEmail,
 	}
 	mockRepo.EXPECT().UpdateUserByID(context.TODO(), mockUpdate).Return(nil)
 
@@ -44,8 +44,8 @@ func TestUpdateUserByIDWhenNotErrorShouldReturnSuccess(t *testing.T) {
 
 	mockReq := UpdateUserRequest{
 		ID:    mockID,
-		Name:  mockUpdateName,
-		Email: mockUpdateEmail,
+		Name:  mockName,
+		Email: mockEmail,
 	}
 	expected := &UpdateUserResponse{
 		Code:    appconstants.SuccessCode,
@@ -60,7 +60,7 @@ func TestUpdateUserByIDWhenNotErrorShouldReturnSuccess(t *testing.T) {
 func TestUpdateUserByIDWhenIDNotFoundShouldReturnError(t *testing.T) {
 	mockGetUser := repositories.User{
 		ID:    mockID,
-		Email: mockUpdateEmail,
+		Email: mockEmail,
 	}
 	mockRepo := mockrepositories.NewMockUserRepository(t)
 	mockRepo.EXPECT().GetUserByFilter(context.TODO(), mockGetUser).
@@ -70,8 +70,8 @@ func TestUpdateUserByIDWhenIDNotFoundShouldReturnError(t *testing.T) {
 
 	mockReq := UpdateUserRequest{
 		ID:    mockID,
-		Name:  mockUpdateName,
-		Email: mockUpdateEmail,
+		Name:  mockName,
+		Email: mockEmail,
 	}
 
 	actual, err := service.UpdateUserByID(context.TODO(), mockReq)
@@ -83,9 +83,9 @@ func TestUpdateUserByIDWhenIDNotFoundShouldReturnError(t *testing.T) {
 func TestUpdateUserByIDWhenEmailDuplicateShouldReturnError(t *testing.T) {
 	mockGetUser := repositories.User{
 		ID:    mockID,
-		Email: mockUpdateEmail,
+		Email: mockEmail,
 	}
-	mockGetUserResp := []repositories.User{{ID: mockID, Email: mockUpdateEmail}}
+	mockGetUserResp := []repositories.User{{ID: mockID, Email: mockEmail}}
 	mockRepo := mockrepositories.NewMockUserRepository(t)
 	mockRepo.EXPECT().GetUserByFilter(context.TODO(), mockGetUser).
 		Return(mockGetUserResp, nil)
@@ -94,20 +94,20 @@ func TestUpdateUserByIDWhenEmailDuplicateShouldReturnError(t *testing.T) {
 
 	mockReq := UpdateUserRequest{
 		ID:    mockID,
-		Name:  mockUpdateName,
-		Email: mockUpdateEmail,
+		Name:  mockName,
+		Email: mockEmail,
 	}
 
 	actual, err := service.UpdateUserByID(context.TODO(), mockReq)
 
 	assert.Nil(t, actual)
-	assert.ErrorIs(t, duplicateEmailError, err)
+	assert.ErrorIs(t, appconstants.DuplicateEmailError, err)
 }
 
 func TestUpdateUserByIDWhenUpdateFailShouldReturnError(t *testing.T) {
 	mockGetUser := repositories.User{
 		ID:    mockID,
-		Email: mockUpdateEmail,
+		Email: mockEmail,
 	}
 	mockGetUserResp := []repositories.User{{ID: mockID, Email: mockOldEmail}}
 	mockRepo := mockrepositories.NewMockUserRepository(t)
@@ -116,8 +116,8 @@ func TestUpdateUserByIDWhenUpdateFailShouldReturnError(t *testing.T) {
 
 	mockUpdate := repositories.User{
 		ID:    mockID,
-		Name:  mockUpdateName,
-		Email: mockUpdateEmail,
+		Name:  mockName,
+		Email: mockEmail,
 	}
 	mockRepo.EXPECT().UpdateUserByID(context.TODO(), mockUpdate).Return(mockError)
 
@@ -125,8 +125,8 @@ func TestUpdateUserByIDWhenUpdateFailShouldReturnError(t *testing.T) {
 
 	mockReq := UpdateUserRequest{
 		ID:    mockID,
-		Name:  mockUpdateName,
-		Email: mockUpdateEmail,
+		Name:  mockName,
+		Email: mockEmail,
 	}
 	actual, err := service.UpdateUserByID(context.TODO(), mockReq)
 

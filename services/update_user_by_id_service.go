@@ -2,15 +2,10 @@ package services
 
 import (
 	"context"
-	"errors"
 	"log"
 
 	"manage-user/appconstants"
 	"manage-user/repositories"
-)
-
-var (
-	duplicateEmailError = errors.New("error duplicate email")
 )
 
 type UpdateUserRequest struct {
@@ -36,7 +31,7 @@ func (srv *userService) UpdateUserByID(ctx context.Context, req UpdateUserReques
 		if user.Email == req.Email {
 			log.Println("duplicate email")
 
-			return nil, duplicateEmailError
+			return nil, appconstants.DuplicateEmailError
 		}
 	}
 

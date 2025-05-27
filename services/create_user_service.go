@@ -2,7 +2,6 @@ package services
 
 import (
 	"context"
-	"errors"
 	"log"
 	"strings"
 	"time"
@@ -37,7 +36,7 @@ func (srv *userService) CreateUser(ctx context.Context, req CreateUserRequest) (
 	if len(existingUser) != 0 {
 		log.Println("duplicate email")
 
-		return nil, errors.New("error duplicate email")
+		return nil, appconstants.DuplicateEmailError
 	}
 
 	bytesPass, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
