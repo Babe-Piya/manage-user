@@ -55,6 +55,7 @@ func (auth *authorization) AuthorizationMiddleware(next echo.HandlerFunc) echo.H
 		c.Set("email", claims.Email)
 		c.Set("name", claims.Name)
 		c.Set("id", claims.ID)
+
 		return next(c)
 	}
 }

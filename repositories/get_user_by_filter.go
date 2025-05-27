@@ -30,7 +30,7 @@ func (repo *userRepository) GetUserByFilter(ctx context.Context, filter User) ([
 	}
 
 	if len(result) == 0 {
-		return nil, errors.New("not found")
+		return nil, errors.New("user not found")
 	}
 
 	return result, nil

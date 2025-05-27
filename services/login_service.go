@@ -34,9 +34,9 @@ func (srv *userService) Login(ctx context.Context, req LoginRequest) (*LoginResp
 	}
 
 	if !checkPassword(users[0].Password, req.Password) {
-		log.Println("wrong password")
+		log.Println("can not login wrong email or password")
 
-		return nil, errors.New("wrong password")
+		return nil, errors.New("can not login wrong email or password")
 	}
 
 	token, err := srv.generateToken(users[0].ID, users[0].Name, users[0].Email)
