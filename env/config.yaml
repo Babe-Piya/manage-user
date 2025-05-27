@@ -1,0 +1,8 @@
+ServerPort: "8181"
+MongoDB:
+  Host: "localhost"
+  Port: "27017"
+  User: "root"
+  Password: "example"
+  DataBaseName: "user"
+JwtSecret: "abc"
