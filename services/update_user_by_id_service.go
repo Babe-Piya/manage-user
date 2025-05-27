@@ -9,6 +9,10 @@ import (
 	"manage-user/repositories"
 )
 
+var (
+	duplicateEmailError = errors.New("error duplicate email")
+)
+
 type UpdateUserRequest struct {
 	ID    string `json:"id" validate:"required"`
 	Name  string `json:"name"`
@@ -32,7 +36,7 @@ func (srv *userService) UpdateUserByID(ctx context.Context, req UpdateUserReques
 		if user.Email == req.Email {
 			log.Println("duplicate email")
 
-			return nil, errors.New("error duplicate email")
+			return nil, duplicateEmailError
 		}
 	}
 
