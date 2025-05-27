@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 
+	"manage-user/appconstants"
 	"manage-user/repositories"
 )
 
@@ -28,7 +29,7 @@ func (srv *userService) DeleteUserByID(ctx context.Context, id string) (*DeleteU
 	}
 
 	return &DeleteUserResponse{
-		Code:    0,
-		Message: "Success",
+		Code:    appconstants.SuccessCode,
+		Message: appconstants.SuccessMessage,
 	}, nil
 }

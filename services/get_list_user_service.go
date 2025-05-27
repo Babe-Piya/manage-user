@@ -3,6 +3,8 @@ package services
 import (
 	"context"
 	"log"
+
+	"manage-user/appconstants"
 )
 
 type GetListUserResponse struct {
@@ -35,8 +37,8 @@ func (srv *userService) GetListUser(ctx context.Context) (*GetListUserResponse, 
 	}
 
 	return &GetListUserResponse{
-		Code:    0,
-		Message: "Success",
+		Code:    appconstants.SuccessCode,
+		Message: appconstants.SuccessMessage,
 		Users:   userDetails,
 	}, nil
 }

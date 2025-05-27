@@ -5,6 +5,7 @@ import (
 	"errors"
 	"log"
 
+	"manage-user/appconstants"
 	"manage-user/repositories"
 )
 
@@ -47,7 +48,7 @@ func (srv *userService) UpdateUserByID(ctx context.Context, req UpdateUserReques
 	}
 
 	return &UpdateUserResponse{
-		Code:    0,
-		Message: "Success",
+		Code:    appconstants.SuccessCode,
+		Message: appconstants.SuccessMessage,
 	}, nil
 }

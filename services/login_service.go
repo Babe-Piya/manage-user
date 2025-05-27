@@ -4,12 +4,14 @@ import (
 	"context"
 	"errors"
 	"log"
-	"manage-user/middlewares"
 	"time"
+
+	"manage-user/appconstants"
+	"manage-user/middlewares"
+	"manage-user/repositories"
 
 	"github.com/golang-jwt/jwt/v5"
 	"golang.org/x/crypto/bcrypt"
-	"manage-user/repositories"
 )
 
 type LoginRequest struct {
@@ -47,8 +49,8 @@ func (srv *userService) Login(ctx context.Context, req LoginRequest) (*LoginResp
 	}
 
 	return &LoginResponse{
-		Code:    0,
-		Message: "success",
+		Code:    appconstants.SuccessCode,
+		Message: appconstants.SuccessMessage,
 		Token:   token,
 	}, nil
 }

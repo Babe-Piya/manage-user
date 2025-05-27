@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 
+	"manage-user/appconstants"
 	"manage-user/repositories"
 )
 
@@ -24,8 +25,8 @@ func (srv *userService) GetUserByID(ctx context.Context, id string) (*GetUserRes
 	}
 
 	return &GetUserResponse{
-		Code:    0,
-		Message: "Success",
+		Code:    appconstants.SuccessCode,
+		Message: appconstants.SuccessMessage,
 		User: UserDetail{
 			ID:    users[0].ID,
 			Name:  users[0].Name,

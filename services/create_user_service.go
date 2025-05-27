@@ -7,6 +7,7 @@ import (
 	"strings"
 	"time"
 
+	"manage-user/appconstants"
 	"manage-user/repositories"
 
 	"github.com/google/uuid"
@@ -60,8 +61,8 @@ func (srv *userService) CreateUser(ctx context.Context, req CreateUserRequest) (
 	}
 
 	return &CreateUserResponse{
-		Code:    0,
-		Message: "Success",
+		Code:    appconstants.SuccessCode,
+		Message: appconstants.SuccessMessage,
 		ID:      id,
 	}, nil
 }
