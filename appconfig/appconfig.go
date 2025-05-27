@@ -1,9 +1,12 @@
 package appconfig
 
+import "time"
+
 type AppConfig struct {
 	ServerPort string
 	MongoDB    MongoDBConfig
 	JwtSecret  string
+	TokenTime  time.Duration // minute
 }
 
 type MongoDBConfig struct {

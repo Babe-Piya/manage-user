@@ -65,7 +65,7 @@ func checkPassword(hash, password string) bool {
 
 func (srv *userService) generateToken(id, name, email string) (string, error) {
 	now := time.Now()
-	expiredTime := now.Add(10 * time.Minute)
+	expiredTime := now.Add(srv.Config.TokenTime * time.Minute)
 	claims := &middlewares.Claims{
 		ID:    id,
 		Name:  name,

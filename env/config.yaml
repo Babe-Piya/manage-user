@@ -6,3 +6,4 @@ MongoDB:
   Password: "example"
   DataBaseName: "user"
 JwtSecret: "abc"
+TokenTime: 30
