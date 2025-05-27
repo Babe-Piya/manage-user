@@ -9,6 +9,7 @@ import (
 	"manage-user/repositories"
 
 	"github.com/stretchr/testify/assert"
+	"go.uber.org/zap"
 )
 
 func TestGetUserByIDWhenNotErrorShouldReturnSuccess(t *testing.T) {
@@ -24,7 +25,8 @@ func TestGetUserByIDWhenNotErrorShouldReturnSuccess(t *testing.T) {
 	mockRepo.EXPECT().GetUserByFilter(context.TODO(), mockGetUser).
 		Return(mockGetUserResp, nil)
 
-	service := NewUserService(mockRepo, nil)
+	logger, _ := zap.NewProduction()
+	service := NewUserService(mockRepo, nil, logger)
 
 	expected := &GetUserResponse{
 		Code:    appconstants.SuccessCode,
@@ -49,7 +51,8 @@ func TestGetUserByIDWhenErrorShouldReturnError(t *testing.T) {
 	mockRepo.EXPECT().GetUserByFilter(context.TODO(), mockGetUser).
 		Return(nil, mockError)
 
-	service := NewUserService(mockRepo, nil)
+	logger, _ := zap.NewProduction()
+	service := NewUserService(mockRepo, nil, logger)
 
 	actual, err := service.GetUserByID(context.TODO(), mockID)
 

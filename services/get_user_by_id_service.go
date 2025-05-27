@@ -2,7 +2,6 @@ package services
 
 import (
 	"context"
-	"log"
 
 	"manage-user/appconstants"
 	"manage-user/repositories"
@@ -15,11 +14,12 @@ type GetUserResponse struct {
 }
 
 func (srv *userService) GetUserByID(ctx context.Context, id string) (*GetUserResponse, error) {
+	srv.Log.Info("Function GetUserByID")
 	users, err := srv.UserRepo.GetUserByFilter(ctx, repositories.User{
 		ID: id,
 	})
 	if err != nil {
-		log.Println(err)
+		srv.Log.Error(err.Error())
 
 		return nil, err
 	}

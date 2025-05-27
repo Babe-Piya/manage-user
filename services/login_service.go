@@ -2,7 +2,6 @@ package services
 
 import (
 	"context"
-	"log"
 	"time"
 
 	"manage-user/appconstants"
@@ -25,24 +24,25 @@ type LoginResponse struct {
 }
 
 func (srv *userService) Login(ctx context.Context, req LoginRequest) (*LoginResponse, error) {
+	srv.Log.Info("Function Login")
 	users, err := srv.UserRepo.GetUserByFilter(ctx, repositories.User{
 		Email: req.Email,
 	})
 	if err != nil {
-		log.Println(err)
+		srv.Log.Error(err.Error())
 
 		return nil, err
 	}
 
 	if !checkPassword(users[0].Password, req.Password) {
-		log.Println("can not login wrong email or password")
+		srv.Log.Error("can not login wrong email or password")
 
 		return nil, appconstants.WrongKeyLoginError
 	}
 
 	token, err := srv.generateToken(users[0].ID, users[0].Name, users[0].Email)
 	if err != nil {
-		log.Println(err)
+		srv.Log.Error(err.Error())
 
 		return nil, err
 	}

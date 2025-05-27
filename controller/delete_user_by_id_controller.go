@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"log"
 	"net/http"
 
 	"manage-user/appconstants"
@@ -14,7 +13,6 @@ func (ctrl *userController) DeleteUserByID(c echo.Context) error {
 	id := c.Param("id")
 	resp, err := ctrl.UserService.DeleteUserByID(ctx, id)
 	if err != nil {
-		log.Println(err)
 		errResp := appconstants.NewErrorResponse(err)
 
 		return c.JSON(http.StatusInternalServerError, errResp)

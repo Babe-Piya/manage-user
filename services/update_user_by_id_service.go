@@ -2,7 +2,6 @@ package services
 
 import (
 	"context"
-	"log"
 
 	"manage-user/appconstants"
 	"manage-user/repositories"
@@ -20,16 +19,17 @@ type UpdateUserResponse struct {
 }
 
 func (srv *userService) UpdateUserByID(ctx context.Context, req UpdateUserRequest) (*UpdateUserResponse, error) {
+	srv.Log.Info("Function UpdateUserByID")
 	existingUser, err := srv.UserRepo.GetUserByFilter(ctx, repositories.User{ID: req.ID, Email: req.Email})
 	if err != nil {
-		log.Println(err)
+		srv.Log.Error(err.Error())
 
 		return nil, err
 	}
 
 	for _, user := range existingUser {
 		if user.Email == req.Email {
-			log.Println("duplicate email")
+			srv.Log.Error("duplicate email")
 
 			return nil, appconstants.DuplicateEmailError
 		}
@@ -41,7 +41,7 @@ func (srv *userService) UpdateUserByID(ctx context.Context, req UpdateUserReques
 		Email: req.Email,
 	})
 	if errUpdate != nil {
-		log.Println(errUpdate)
+		srv.Log.Error(errUpdate.Error())
 
 		return nil, errUpdate
 	}

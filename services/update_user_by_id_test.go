@@ -10,6 +10,7 @@ import (
 	"manage-user/repositories"
 
 	"github.com/stretchr/testify/assert"
+	"go.uber.org/zap"
 )
 
 const (
@@ -40,7 +41,8 @@ func TestUpdateUserByIDWhenNotErrorShouldReturnSuccess(t *testing.T) {
 	}
 	mockRepo.EXPECT().UpdateUserByID(context.TODO(), mockUpdate).Return(nil)
 
-	service := NewUserService(mockRepo, nil)
+	logger, _ := zap.NewProduction()
+	service := NewUserService(mockRepo, nil, logger)
 
 	mockReq := UpdateUserRequest{
 		ID:    mockID,
@@ -66,7 +68,8 @@ func TestUpdateUserByIDWhenIDNotFoundShouldReturnError(t *testing.T) {
 	mockRepo.EXPECT().GetUserByFilter(context.TODO(), mockGetUser).
 		Return(nil, mockError)
 
-	service := NewUserService(mockRepo, nil)
+	logger, _ := zap.NewProduction()
+	service := NewUserService(mockRepo, nil, logger)
 
 	mockReq := UpdateUserRequest{
 		ID:    mockID,
@@ -90,7 +93,8 @@ func TestUpdateUserByIDWhenEmailDuplicateShouldReturnError(t *testing.T) {
 	mockRepo.EXPECT().GetUserByFilter(context.TODO(), mockGetUser).
 		Return(mockGetUserResp, nil)
 
-	service := NewUserService(mockRepo, nil)
+	logger, _ := zap.NewProduction()
+	service := NewUserService(mockRepo, nil, logger)
 
 	mockReq := UpdateUserRequest{
 		ID:    mockID,
@@ -121,7 +125,8 @@ func TestUpdateUserByIDWhenUpdateFailShouldReturnError(t *testing.T) {
 	}
 	mockRepo.EXPECT().UpdateUserByID(context.TODO(), mockUpdate).Return(mockError)
 
-	service := NewUserService(mockRepo, nil)
+	logger, _ := zap.NewProduction()
+	service := NewUserService(mockRepo, nil, logger)
 
 	mockReq := UpdateUserRequest{
 		ID:    mockID,

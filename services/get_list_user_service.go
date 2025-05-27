@@ -2,7 +2,6 @@ package services
 
 import (
 	"context"
-	"log"
 
 	"manage-user/appconstants"
 )
@@ -20,9 +19,10 @@ type UserDetail struct {
 }
 
 func (srv *userService) GetListUser(ctx context.Context) (*GetListUserResponse, error) {
+	srv.Log.Info("function GetListUser")
 	users, err := srv.UserRepo.GetListUser(ctx)
 	if err != nil {
-		log.Println(err)
+		srv.Log.Error(err.Error())
 
 		return nil, err
 	}

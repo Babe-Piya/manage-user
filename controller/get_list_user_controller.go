@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"log"
 	"net/http"
 
 	"manage-user/appconstants"
@@ -13,7 +12,6 @@ func (ctrl *userController) GetListUser(c echo.Context) error {
 	ctx := c.Request().Context()
 	resp, err := ctrl.UserService.GetListUser(ctx)
 	if err != nil {
-		log.Println(err)
 		errResp := appconstants.NewErrorResponse(err)
 
 		return c.JSON(http.StatusInternalServerError, errResp)
