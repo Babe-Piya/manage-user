@@ -1,6 +1,7 @@
 package server
 
 import (
+	"manage-user/logger"
 	"net/http"
 
 	"manage-user/appconfig"
@@ -13,9 +14,10 @@ import (
 	"github.com/go-playground/validator/v10"
 	"github.com/labstack/echo/v4"
 	"go.mongodb.org/mongo-driver/v2/mongo"
+	"go.uber.org/zap"
 )
 
-func routes(e *echo.Echo, db *mongo.Database, config *appconfig.AppConfig) {
+func routes(e *echo.Echo, db *mongo.Database, config *appconfig.AppConfig, log *zap.Logger) {
 	userRepo := repositories.NewUserRepository(db)
 
 	userSrv := services.NewUserService(userRepo, config)
@@ -32,6 +34,8 @@ func routes(e *echo.Echo, db *mongo.Database, config *appconfig.AppConfig) {
 		}
 		return c.JSON(http.StatusOK, response)
 	})
+
+	e.Use(logger.ZapLogger(log))
 
 	userAPI := e.Group("/user")
 	userAPI.POST("/login", userCtrl.Login)

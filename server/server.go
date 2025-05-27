@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"go.uber.org/zap"
 	"log"
 	"net/http"
 	"os"
@@ -24,8 +25,9 @@ func Start(config *appconfig.AppConfig) (*echo.Echo, *mongo.Database) {
 		log.Fatal(err)
 	}
 
+	logger, _ := zap.NewProduction()
 	e := echo.New()
-	routes(e, db, config)
+	routes(e, db, config, logger)
 
 	go func() {
 		endPoint := fmt.Sprintf(":%s", config.ServerPort)
