@@ -8,16 +8,18 @@ import (
 )
 
 func (repo *userRepository) GetUserByFilter(ctx context.Context, filter User) ([]User, error) {
-	var fil bson.M
+	var condition []bson.M
 	if filter.Name != "" {
-		fil = bson.M{"name": filter.Name}
+		condition = append(condition, bson.M{"name": filter.Name})
 	}
 	if filter.Email != "" {
-		fil = bson.M{"email": filter.Email}
+		condition = append(condition, bson.M{"email": filter.Email})
 	}
 	if filter.ID != "" {
-		fil = bson.M{"_id": filter.ID}
+		condition = append(condition, bson.M{"_id": filter.ID})
 	}
+
+	fil := bson.M{"$or": condition}
 
 	cursor, err := repo.DB.Collection("users").Find(ctx, fil)
 	if err != nil {

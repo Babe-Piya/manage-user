@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"log"
-	"strings"
 
 	"manage-user/repositories"
 )
@@ -21,22 +20,15 @@ type UpdateUserResponse struct {
 }
 
 func (srv *userService) UpdateUserByID(ctx context.Context, req UpdateUserRequest) (*UpdateUserResponse, error) {
-	_, err := srv.UserRepo.GetUserByFilter(ctx, repositories.User{ID: req.ID})
+	existingUser, err := srv.UserRepo.GetUserByFilter(ctx, repositories.User{ID: req.ID, Email: req.Email})
 	if err != nil {
 		log.Println(err)
 
 		return nil, err
 	}
 
-	if req.Email != "" {
-		existingUser, err := srv.UserRepo.GetUserByFilter(ctx, repositories.User{Email: req.Email})
-		if err != nil && !strings.Contains(err.Error(), "not found") {
-			log.Println(err)
-
-			return nil, err
-		}
-
-		if len(existingUser) != 0 {
+	for _, user := range existingUser {
+		if user.Email == req.Email {
 			log.Println("duplicate email")
 
 			return nil, errors.New("error duplicate email")
