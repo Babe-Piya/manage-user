@@ -19,7 +19,6 @@ import (
 )
 
 func Start(config *appconfig.AppConfig) (*echo.Echo, *mongo.Database) {
-	// mongodb://user:password@host:port
 	db, err := database.NewConnection(&config.MongoDB)
 	if err != nil {
 		log.Fatal(err)

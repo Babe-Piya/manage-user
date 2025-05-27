@@ -35,7 +35,7 @@ func routes(e *echo.Echo, db *mongo.Database, config *appconfig.AppConfig) {
 
 	userAPI := e.Group("/user")
 	userAPI.POST("/login", userCtrl.Login)
-	userAPI.POST("/create", userCtrl.CreateUser)
+	userAPI.POST("/register", userCtrl.CreateUser)
 
 	auth := middlewares.NewAuthorization(config.JwtSecret)
 	userAPI.Use(auth.AuthorizationMiddleware)
