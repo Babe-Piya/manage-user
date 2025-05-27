@@ -12,7 +12,7 @@ import (
 
 func LoadFileConfig(configPath string) *appconfig.AppConfig {
 	if len(configPath) == 0 {
-		log.Fatal("Config path is required")
+		configPath = "env/config.yaml"
 	}
 
 	dir := filepath.Dir(configPath)

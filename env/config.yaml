@@ -1,6 +1,6 @@
 ServerPort: "8181"
 MongoDB:
-  Host: "localhost"
+  Host: "mongodb"
   Port: "27017"
   User: "root"
   Password: "example"
