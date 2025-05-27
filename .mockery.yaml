@@ -1,0 +1,11 @@
+with-expecter: True
+inpackage: False
+dir: mocks/{{.PackageName}}
+mockname: "Mock{{.InterfaceName}}"
+outpkg: "mock{{.PackageName}}"
+filename: "mock_{{.InterfaceName}}.go"
+all: True
+packages:
+  manage-user/repositories:
+    config:
+      recursive: True

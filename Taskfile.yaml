@@ -1,0 +1,6 @@
+version: '3'
+tasks:
+  gen:
+    cmds:
+      - docker run --rm -v "$PWD":/src -w /src golang:1.24.2 go run github.com/vektra/mockery/v2@latest
+      - go mod tidy
